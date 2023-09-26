@@ -4,24 +4,25 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.hw_1_6.R
 import com.example.hw_1_6.databinding.FragmentTaskBinding
 import com.example.hw_1_6.model.TaskModel
-import com.example.hw_1_6.model.TaskViewModel
+import com.example.hw_1_6.TaskViewModel
 import com.example.hw_1_6.ui.task.adapter.Adapter
 
-class TaskFragment : Fragment(){
+class TaskFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskBinding
-    private var adapter = Adapter(this::onLongClickTask,this::isCheckedTask)
-
-    private lateinit var viewModel:TaskViewModel
+    private var adapter = Adapter(this::onLongClickTask, this::isCheckedTask, this::onItemClick)
+    private var updateTask:TaskModel?=null
+    private lateinit var viewModel: TaskViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,19 +35,25 @@ class TaskFragment : Fragment(){
     @SuppressLint("FragmentLiveDataObserve")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel= ViewModelProvider(requireActivity())[TaskViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[TaskViewModel::class.java]
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.addTaskFragment)
         }
         binding.rvTask.adapter = adapter
-        viewModel.list.observe(this){
+        viewModel.list.observe(this) {
             adapter.setTasks(it)
         }
-        if(arguments!=null){
-            var getTitle=arguments?.getString("key")
-            var getTask=arguments?.getString("kay")
-            var data=TaskModel(checkBox = false, title = getTitle, task = getTask)
-            viewModel.addTask(data)
+        updateTask=arguments?.getSerializable("updateTask") as TaskModel?
+
+        if (updateTask == null){
+            if (arguments != null) {
+                val getTitle = arguments?.getString("key")
+                val getTask = arguments?.getString("kay")
+                val data = TaskModel(checkBox = false, title = getTitle, task = getTask, id = -1)
+                viewModel.addTask(data)
+            }
+        } else{
+            viewModel.upDate(updateTask!!)
         }
     }
 
@@ -70,6 +77,8 @@ class TaskFragment : Fragment(){
         viewModel.checkedTask(task, isChecked)
     }
 
-
+    private fun onItemClick(task: TaskModel) {
+        findNavController().navigate(R.id.addTaskFragment, bundleOf("task_key" to task))
+    }
 }
 
