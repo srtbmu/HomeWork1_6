@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SpinnerTheme" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@android:drawable/btn_dropdown</item>
+        <item name="android:overlapAnchor">false</item>
+        <item name="android:popupBackground">#ffffff</item>
+        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem</item>
+    </style>
+
+    <style name="SpinnerDropDownItem" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:padding">16dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+</resources>

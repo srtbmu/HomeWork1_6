@@ -8,8 +8,12 @@ import com.example.hw_1_6.model.TaskModel
 
 class TaskViewModel : ViewModel() {
     private var tasks = mutableListOf<TaskModel>()
-    private var _list = MutableLiveData<MutableList<TaskModel>>()
-    var list: LiveData<MutableList<TaskModel>> = _list
+    private val _list = MutableLiveData<MutableList<TaskModel>>()
+    val list: LiveData<MutableList<TaskModel>> get() = _list
+
+    fun getTasks(){
+        _list.value=tasks
+    }
 
     fun addTask(task: TaskModel) {
         tasks.add(task)
@@ -43,4 +47,23 @@ class TaskViewModel : ViewModel() {
             }
         }
     }
-}
+    fun filterTasksFalse() {
+        val sortedList = mutableListOf<TaskModel>()
+        tasks.forEach { task ->
+            if (task.checkBox==false)
+                sortedList.add(task)
+        }
+        _list.value = sortedList
+    }
+
+    fun filterTasksTrue() {
+
+        val sortedList = mutableListOf<TaskModel>()
+        tasks.forEach { task ->
+            if (task.checkBox==true)
+                sortedList.add(task)
+        }
+        _list.value = sortedList
+    }
+
+    }

@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -21,7 +23,7 @@ class TaskFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskBinding
     private var adapter = Adapter(this::onLongClickTask, this::isCheckedTask, this::onItemClick)
-    private var updateTask:TaskModel?=null
+    private var updateTask: TaskModel? = null
     private lateinit var viewModel: TaskViewModel
 
     override fun onCreateView(
@@ -43,18 +45,20 @@ class TaskFragment : Fragment() {
         viewModel.list.observe(this) {
             adapter.setTasks(it)
         }
-        updateTask=arguments?.getSerializable("updateTask") as TaskModel?
+        updateTask = arguments?.getSerializable("updateTask") as TaskModel?
 
-        if (updateTask == null){
+        if (updateTask == null) {
             if (arguments != null) {
                 val getTitle = arguments?.getString("key")
                 val getTask = arguments?.getString("kay")
-                val data = TaskModel(checkBox = false, title = getTitle, task = getTask, id = -1)
+                val data = TaskModel(checkBox = false, title = getTitle, task = getTask, id = 0)
                 viewModel.addTask(data)
             }
-        } else{
+        } else {
             viewModel.upDate(updateTask!!)
         }
+        initSpinner()
+
     }
 
     private fun onLongClickTask(task: TaskModel) { // deleteTaskClick
@@ -79,6 +83,46 @@ class TaskFragment : Fragment() {
 
     private fun onItemClick(task: TaskModel) {
         findNavController().navigate(R.id.addTaskFragment, bundleOf("task_key" to task))
+    }
+
+    private fun initSpinner() {
+        val taskFilterList = arrayOf(
+            getString(R.string.all_task),
+            getString(R.string.false_task),
+            getString(R.string.true_task)
+        )
+
+        val adapterSpinner =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, taskFilterList)
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.spinner.adapter = adapterSpinner
+
+        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
+
+                when (taskFilterList[position]) {
+                    getString(R.string.all_task) -> viewModel.getTasks()
+                    getString(R.string.false_task) -> viewModel.filterTasksFalse()
+                    getString(R.string.true_task) -> viewModel.filterTasksTrue()
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                viewModel.getTasks()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initSpinner()
     }
 }
 
