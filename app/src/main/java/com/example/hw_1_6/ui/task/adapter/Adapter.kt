@@ -11,7 +11,7 @@ import com.example.hw_1_6.model.TaskModel
 
 class Adapter(
     private var onLongClick: (TaskModel) -> Unit,
-    private var checkedTask: (TaskModel, Boolean) -> Unit,
+    val onDoneClick: (TaskModel)->Unit,
     private var onclick: (TaskModel) -> Unit,
 ) : Adapter<com.example.hw_1_6.ui.task.adapter.Adapter.TaskHolder>() {
 
@@ -47,9 +47,8 @@ class Adapter(
                 task.text = taskModel.task
                 checkbox.isChecked = taskModel.checkBox
 
-                checkbox.setOnCheckedChangeListener { _, isChecked ->
-                    checkedTask(taskModel, isChecked)
-                    Log.e("ololo", "bind:$isChecked", )
+                checkbox.setOnClickListener {
+                    onDoneClick(taskModel)
                 }
             }
             itemView.setOnLongClickListener {

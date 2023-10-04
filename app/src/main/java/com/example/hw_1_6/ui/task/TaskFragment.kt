@@ -16,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.hw_1_6.R
 import com.example.hw_1_6.databinding.FragmentTaskBinding
 import com.example.hw_1_6.model.TaskModel
-import com.example.hw_1_6.TaskViewModel
 import com.example.hw_1_6.ui.task.adapter.Adapter
 
 class TaskFragment : Fragment() {
@@ -29,7 +28,7 @@ class TaskFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = FragmentTaskBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -77,8 +76,8 @@ class TaskFragment : Fragment() {
         dialogBuilder.show()
     }
 
-    private fun isCheckedTask(task: TaskModel, isChecked: Boolean) {
-        viewModel.checkedTask(task, isChecked)
+    private fun isCheckedTask(task: TaskModel) {
+        viewModel.checkedTask(task)
     }
 
     private fun onItemClick(task: TaskModel) {
