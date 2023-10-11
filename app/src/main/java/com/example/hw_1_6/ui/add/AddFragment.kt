@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.hw_1_6.R
 import com.example.hw_1_6.databinding.FragmentAddTaskBinding
-import com.example.hw_1_6.model.TaskModel
+import com.example.hw_1_6.model.Model
 
-class AddTaskFragment : Fragment() {
+class AddFragment : Fragment() {
     private lateinit var binding: FragmentAddTaskBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +39,7 @@ class AddTaskFragment : Fragment() {
     }
 
     private fun update() {
-        var updateTitle = arguments?.getSerializable("task_key") as TaskModel?
+        var updateTitle = arguments?.getSerializable("task_key") as Model?
         binding.editTextTitle.setText(updateTitle?.title)
         binding.editTextTask.setText(updateTitle?.task)
 

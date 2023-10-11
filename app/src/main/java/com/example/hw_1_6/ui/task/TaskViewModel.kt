@@ -3,33 +3,33 @@ package com.example.hw_1_6.ui.task
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.hw_1_6.model.TaskModel
+import com.example.hw_1_6.model.Model
 
 class TaskViewModel : ViewModel() {
-    private val tasks = mutableListOf<TaskModel>()
-    private val _taskList = MutableLiveData<MutableList<TaskModel>>()
-    val taskList: LiveData<MutableList<TaskModel>> get() = _taskList
+    private val tasks = mutableListOf<Model>()
+    private val _taskList = MutableLiveData<MutableList<Model>>()
+    val taskList: LiveData<MutableList<Model>> get() = _taskList
 
     fun getTasks() {
         _taskList.value = tasks
     }
 
-    fun addTask(task: TaskModel) {
+    fun addTask(task: Model) {
         tasks.add(task)
         _taskList.value = tasks
     }
 
-    fun deleteTask(task: TaskModel) {
+    fun deleteTask(task: Model) {
         tasks.remove(task)
         _taskList.value = tasks
     }
 
-    fun markTaskAsChecked(task: TaskModel) {
+    fun markTaskAsChecked(task: Model) {
         tasks[task.id].checkBox = true
         getTasks()
     }
 
-    fun updateTask(task: TaskModel) {
+    fun updateTask(task: Model) {
         tasks.replaceAll { mTask ->
             when (mTask.id) {
                 task.id -> {
@@ -44,7 +44,7 @@ class TaskViewModel : ViewModel() {
     }
 
     fun filterUncheckedTasks() {
-        val filteredList = ArrayList<TaskModel>()
+        val filteredList = ArrayList<Model>()
         tasks.forEach { task ->
             if (!task.checkBox)
                 filteredList.add(task)
@@ -53,7 +53,7 @@ class TaskViewModel : ViewModel() {
     }
 
     fun filterCheckedTasks() {
-        val filteredList = ArrayList<TaskModel>()
+        val filteredList = ArrayList<Model>()
         tasks.forEach { task ->
             if (task.checkBox)
                 filteredList.add(task)

@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_task" />
     <fragment
         android:id="@+id/addTaskFragment"
-        android:name="com.example.hw_1_6.ui.add.AddTaskFragment"
+        android:name="com.example.hw_1_6.ui.add.AddFragment"
         android:label="fragment_add_task"
         tools:layout="@layout/fragment_add_task" />
 </navigation>

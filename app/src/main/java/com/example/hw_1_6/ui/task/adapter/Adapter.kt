@@ -1,23 +1,21 @@
 package com.example.hw_1_6.ui.task.adapter
 
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.hw_1_6.databinding.ItemTaskBinding
-import com.example.hw_1_6.model.TaskModel
+import com.example.hw_1_6.model.Model
 
 class Adapter(
-    private var onLongClick: (TaskModel) -> Unit,
-    val onDoneClick: (TaskModel)->Unit,
-    private var onclick: (TaskModel) -> Unit,
+    private var onLongClick: (Model) -> Unit,
+    val onDoneClick: (Model)->Unit,
+    private var onclick: (Model) -> Unit,
 ) : Adapter<com.example.hw_1_6.ui.task.adapter.Adapter.TaskHolder>() {
 
-    private var taskList = mutableListOf<TaskModel>()
+    private var taskList = mutableListOf<Model>()
 
-    fun setTasks(newList: MutableList<TaskModel>) {
+    fun setTasks(newList: MutableList<Model>) {
         this.taskList = newList
         notifyDataSetChanged()
     }
@@ -40,7 +38,7 @@ class Adapter(
     }
 
     inner class TaskHolder(private var binding: ItemTaskBinding) : ViewHolder(binding.root) {
-        fun bind(taskModel: TaskModel) {
+        fun bind(taskModel: Model) {
             with(binding) {
                 taskModel.id=adapterPosition
                 textTitle.text = taskModel.title

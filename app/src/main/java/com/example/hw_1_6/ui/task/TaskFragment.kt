@@ -15,14 +15,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.hw_1_6.R
 import com.example.hw_1_6.databinding.FragmentTaskBinding
-import com.example.hw_1_6.model.TaskModel
+import com.example.hw_1_6.model.Model
 import com.example.hw_1_6.ui.task.adapter.Adapter
 
 class TaskFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskBinding
     private var adapter = Adapter(this::onLongClickTask, this::isCheckedTask, this::onItemClick)
-    private var updateTask: TaskModel? = null
+    private var updateTask: Model? = null
     private lateinit var viewModel: TaskViewModel
 
     override fun onCreateView(
@@ -44,13 +44,13 @@ class TaskFragment : Fragment() {
         viewModel.taskList.observe(this) {
             adapter.setTasks(it)
         }
-        updateTask = arguments?.getSerializable("updateTask") as TaskModel?
+        updateTask = arguments?.getSerializable("updateTask") as Model?
 
         if (updateTask == null) {
             if (arguments != null) {
                 val getTitle = arguments?.getString("key")
                 val getTask = arguments?.getString("kay")
-                val data = TaskModel(checkBox = false, title = getTitle, task = getTask, id = 0)
+                val data = Model(checkBox = false, title = getTitle, task = getTask, id = 0)
                 viewModel.addTask(data)
             }
         } else {
@@ -59,7 +59,7 @@ class TaskFragment : Fragment() {
         initSpinner()
     }
 
-    private fun onLongClickTask(task: TaskModel) {
+    private fun onLongClickTask(task: Model) {
         val dialogBuilder = AlertDialog.Builder(requireContext())
         dialogBuilder.setTitle("Вы хотите удалить данные?")
             .setMessage("Восстановление данных будет невозможным!")
@@ -73,11 +73,11 @@ class TaskFragment : Fragment() {
         dialogBuilder.show()
     }
 
-    private fun isCheckedTask(task: TaskModel) {
+    private fun isCheckedTask(task: Model) {
         viewModel.markTaskAsChecked(task)
     }
 
-    private fun onItemClick(task: TaskModel) {
+    private fun onItemClick(task: Model) {
         findNavController().navigate(R.id.addTaskFragment, bundleOf("task_key" to task))
     }
 
