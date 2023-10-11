@@ -6,30 +6,30 @@ import androidx.lifecycle.ViewModel
 import com.example.hw_1_6.model.TaskModel
 
 class TaskViewModel : ViewModel() {
-    private var tasks = mutableListOf<TaskModel>()
-    private val _list = MutableLiveData<MutableList<TaskModel>>()
-    val list: LiveData<MutableList<TaskModel>> get() = _list
+    private val tasks = mutableListOf<TaskModel>()
+    private val _taskList = MutableLiveData<MutableList<TaskModel>>()
+    val taskList: LiveData<MutableList<TaskModel>> get() = _taskList
 
     fun getTasks() {
-        _list.value = tasks
+        _taskList.value = tasks
     }
 
     fun addTask(task: TaskModel) {
         tasks.add(task)
-        _list.value = tasks
+        _taskList.value = tasks
     }
 
     fun deleteTask(task: TaskModel) {
         tasks.remove(task)
-        _list.value = tasks
+        _taskList.value = tasks
     }
 
-    fun checkedTask(task: TaskModel) {
-        tasks[task.id].checkBox= true
+    fun markTaskAsChecked(task: TaskModel) {
+        tasks[task.id].checkBox = true
         getTasks()
     }
 
-    fun upDate(task: TaskModel) {
+    fun updateTask(task: TaskModel) {
         tasks.replaceAll { mTask ->
             when (mTask.id) {
                 task.id -> {
@@ -43,23 +43,21 @@ class TaskViewModel : ViewModel() {
         }
     }
 
-    fun filterTasksFalse() {
-        val sortedList = ArrayList<TaskModel>()
+    fun filterUncheckedTasks() {
+        val filteredList = ArrayList<TaskModel>()
         tasks.forEach { task ->
-            if (task.checkBox == false)
-                sortedList.add(task)
+            if (!task.checkBox)
+                filteredList.add(task)
         }
-        _list.value = sortedList
+        _taskList.value = filteredList
     }
 
-    fun filterTasksTrue() {
-
-        val sortedList = ArrayList<TaskModel>()
+    fun filterCheckedTasks() {
+        val filteredList = ArrayList<TaskModel>()
         tasks.forEach { task ->
-            if (task.checkBox == true)
-                sortedList.add(task)
+            if (task.checkBox)
+                filteredList.add(task)
         }
-        _list.value = sortedList
+        _taskList.value = filteredList
     }
-
 }

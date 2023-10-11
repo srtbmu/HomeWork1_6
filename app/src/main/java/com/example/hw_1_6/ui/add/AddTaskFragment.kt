@@ -1,4 +1,4 @@
-package com.example.hw_1_6.ui.addtask
+package com.example.hw_1_6.ui.add
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -28,27 +28,26 @@ class AddTaskFragment : Fragment() {
         } else {
             update()
         }
-
     }
 
     private fun initClicker() {
-        binding.btnAdd.setOnClickListener {
-            var title = binding.etTitle.text.toString()
-            var task = binding.etTask.text.toString()
+        binding.buttonAdd.setOnClickListener {
+            var title = binding.editTextTitle.text.toString()
+            var task = binding.editTextTask.text.toString()
             findNavController().navigate(R.id.taskFragment, bundleOf("key" to title, "kay" to task))
         }
     }
 
     private fun update() {
         var updateTitle = arguments?.getSerializable("task_key") as TaskModel?
-        binding.etTitle.setText(updateTitle?.title)
-        binding.etTask.setText(updateTitle?.task)
+        binding.editTextTitle.setText(updateTitle?.title)
+        binding.editTextTask.setText(updateTitle?.task)
 
-        binding.btnAdd.text = "update"
-        binding.btnAdd.setOnClickListener {
+        binding.buttonAdd.text = "update"
+        binding.buttonAdd.setOnClickListener {
             val data = updateTitle!!.copy(
-                title = binding.etTitle.text.toString(),
-                task = binding.etTask.text.toString()
+                title = binding.editTextTitle.text.toString(),
+                task = binding.editTextTask.text.toString()
             )
             findNavController().navigate(R.id.taskFragment, bundleOf("updateTask" to data))
         }

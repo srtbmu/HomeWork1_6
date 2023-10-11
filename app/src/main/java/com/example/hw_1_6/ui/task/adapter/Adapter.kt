@@ -43,8 +43,8 @@ class Adapter(
         fun bind(taskModel: TaskModel) {
             with(binding) {
                 taskModel.id=adapterPosition
-                title.text = taskModel.title
-                task.text = taskModel.task
+                textTitle.text = taskModel.title
+                textTask.text = taskModel.task
                 checkbox.isChecked = taskModel.checkBox
 
                 checkbox.setOnClickListener {

@@ -27,7 +27,7 @@ class TaskFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentTaskBinding.inflate(layoutInflater)
         return binding.root
@@ -36,12 +36,12 @@ class TaskFragment : Fragment() {
     @SuppressLint("FragmentLiveDataObserve")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[TaskViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity()).get(TaskViewModel::class.java)
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.addTaskFragment)
         }
         binding.rvTask.adapter = adapter
-        viewModel.list.observe(this) {
+        viewModel.taskList.observe(this) {
             adapter.setTasks(it)
         }
         updateTask = arguments?.getSerializable("updateTask") as TaskModel?
@@ -54,30 +54,27 @@ class TaskFragment : Fragment() {
                 viewModel.addTask(data)
             }
         } else {
-            viewModel.upDate(updateTask!!)
+            viewModel.updateTask(updateTask!!)
         }
         initSpinner()
-
     }
 
-    private fun onLongClickTask(task: TaskModel) { // deleteTaskClick
+    private fun onLongClickTask(task: TaskModel) {
         val dialogBuilder = AlertDialog.Builder(requireContext())
         dialogBuilder.setTitle("Вы хотите удалить данные?")
-            .setMessage("Востановить данные бедет невозможным!")
+            .setMessage("Восстановление данных будет невозможным!")
             .setPositiveButton("ОК") { dialog: DialogInterface, _: Int ->
-                // Обработка нажатия кнопки "OK"
                 viewModel.deleteTask(task)
                 dialog.dismiss()
             }
             .setNegativeButton("Отмена") { dialog: DialogInterface, _: Int ->
-                // Обработка нажатия кнопки "Отмена"
                 dialog.dismiss()
             }
         dialogBuilder.show()
     }
 
     private fun isCheckedTask(task: TaskModel) {
-        viewModel.checkedTask(task)
+        viewModel.markTaskAsChecked(task)
     }
 
     private fun onItemClick(task: TaskModel) {
@@ -108,8 +105,8 @@ class TaskFragment : Fragment() {
 
                 when (taskFilterList[position]) {
                     getString(R.string.all_task) -> viewModel.getTasks()
-                    getString(R.string.false_task) -> viewModel.filterTasksFalse()
-                    getString(R.string.true_task) -> viewModel.filterTasksTrue()
+                    getString(R.string.false_task) -> viewModel.filterUncheckedTasks()
+                    getString(R.string.true_task) -> viewModel.filterCheckedTasks()
                 }
             }
 
@@ -124,4 +121,3 @@ class TaskFragment : Fragment() {
         initSpinner()
     }
 }
-

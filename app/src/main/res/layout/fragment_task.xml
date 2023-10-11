@@ -13,43 +13,37 @@
         android:layout_height="wrap_content"
         android:background="#4DD0E1"
         app:layout_constraintTop_toTopOf="parent">
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:gravity="end"-->
-<!--            android:paddingStart="16dp"-->
-<!--            android:paddingEnd="16dp"-->
-<!--            android:text="⋮"-->
-<!--            android:textSize="40sp"-->
-<!--            android:textColor="#000000" />-->
+
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="end"
-            android:popupBackground="#ffffff"
-            android:backgroundTint="#ffffff"
-            android:spinnerMode="dropdown"
-            android:layoutDirection="locale"
             android:layout_gravity="end"
-            android:orientation="vertical"/>
+            android:backgroundTint="#ffffff"
+            android:gravity="end"
+            android:layoutDirection="locale"
+            android:orientation="vertical"
+            android:popupBackground="#ffffff"
+            android:spinnerMode="dropdown" />
     </com.google.android.material.appbar.MaterialToolbar>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:backgroundTint="#4CAF50"
+        android:backgroundTint="#00BCD4"
         android:src="@drawable/baseline_add_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_task"
-        tools:listitem="@layout/item_task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/appbar"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        tools:layout_editor_absoluteX="50dp"
+        tools:listitem="@layout/item_task" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
